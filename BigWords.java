@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -37,6 +39,19 @@ public class BigWords extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         frame.setVisible(true);
+        
+        frame.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    textLabel.setText("");
+                } else if (e.isActionKey()) {
+                    textLabel.setText(String.valueOf(e.getKeyChar()));
+                } else {
+                    textLabel.setText(textLabel.getText() 
+                        + String.valueOf(e.getKeyChar()));
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
