@@ -6,15 +6,19 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class BigWords {
-    public static void main(String[] args) {
+public class BigWords extends JPanel {
+    private JFrame frame;
+    private JLabel textLabel;
+
+    public void mainGUI() {
         // Create JFrame
-        JFrame frame = new JFrame("Big Words");
+        frame = new JFrame("Big Words");
 
         // Create Label
-        JLabel textLabel = new JLabel("Hello");
+        textLabel = new JLabel("Hello");
         textLabel.setHorizontalAlignment(JLabel.CENTER);
         textLabel.setFont(new Font("SansSerif", Font.BOLD, 90));
         textLabel.setForeground(Color.WHITE);
@@ -33,5 +37,14 @@ public class BigWords {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                BigWords bigWords = new BigWords();
+                bigWords.mainGUI();
+            }
+        });
     }
 }
