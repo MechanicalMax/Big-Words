@@ -14,15 +14,17 @@ import javax.swing.WindowConstants;
 public class BigWords extends JPanel {
     private JFrame frame;
     private JLabel textLabel;
+    private Font font;
 
     public void mainGUI() {
         // Create JFrame
         frame = new JFrame("Big Words");
+        font = new Font("SansSerif", Font.BOLD, 90);
 
         // Create Label
-        textLabel = new JLabel("Hello");
+        textLabel = new JLabel("");
         textLabel.setHorizontalAlignment(JLabel.CENTER);
-        textLabel.setFont(new Font("SansSerif", Font.BOLD, 90));
+        textLabel.setFont(font);
         textLabel.setForeground(Color.WHITE);
 
         frame.add(textLabel);
@@ -44,10 +46,14 @@ public class BigWords extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     textLabel.setText("");
-                } else if (e.isActionKey()) {
-                    textLabel.setText(String.valueOf(e.getKeyChar()));
-                } else {
-                    textLabel.setText(textLabel.getText() 
+                } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    textLabel.setText(
+                        textLabel.getText().substring(
+                            0, textLabel.getText().length() - 1
+                        )
+                    );
+                } else if (font.canDisplay(e.getKeyChar())) {
+                    textLabel.setText(textLabel.getText()
                         + String.valueOf(e.getKeyChar()));
                 }
             }
