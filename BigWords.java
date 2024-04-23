@@ -19,7 +19,7 @@ public class BigWords extends JPanel {
     private FontMetrics fontMetrics;
     private int textHeight;
     private int textWidth;
-    private final static Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 800);
+    private final static Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 500);
     private final static int ITERATION_LIMIT = 200;
     private final static int FONT_THRESHOLD = 30;
 
@@ -71,22 +71,22 @@ public class BigWords extends JPanel {
     }
     
     private void setScaledText(String newText) {
-        fontMetrics = getFontMetrics(font);
-        textHeight = fontMetrics.getHeight();
-        textWidth = fontMetrics.stringWidth(newText);
-        
-        if (textWidth == 0 || textHeight == 0) {
-            textLabel.setFont(DEFAULT_FONT);
+        if (newText.isBlank()) {
+            font = DEFAULT_FONT;
+            textLabel.setFont(font);
             textLabel.setText(newText);
             return;
         }
         
+        fontMetrics = getFontMetrics(font);
+        textHeight = fontMetrics.getHeight();
+        textWidth = fontMetrics.stringWidth(newText);
+        
         float scale = 1f;
         int iteration = 0;
-        while (((frame.getSize().height - textHeight < 0
-            || frame.getSize().height - textHeight > FONT_THRESHOLD)
-            || (frame.getSize().width - textWidth < 0 
-            || frame.getSize().width - textWidth > FONT_THRESHOLD))
+        while (frame.getSize().height - textHeight > FONT_THRESHOLD
+            && (frame.getSize().width - textWidth < 0 
+            || frame.getSize().width - textWidth > FONT_THRESHOLD)
             && iteration++ < ITERATION_LIMIT
         ) {
             scale = (textWidth - frame.getSize().width) < 0 ? 1 : -1;
