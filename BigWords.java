@@ -62,9 +62,19 @@ public class BigWords extends JPanel {
                         )
                     );
                 } else if (font.canDisplay(e.getKeyChar())) {
-                    setScaledText(textLabel.getText()
-                        + String.valueOf(e.getKeyChar())
-                    );
+                    if (e.getKeyChar() != 'W') {
+                        setScaledText(textLabel.getText()
+                            + String.valueOf(e.getKeyChar())
+                        );
+                    } else {
+                        // Capital "W" causes other letters to be placed
+                        // on top of it when typing with large font,
+                        // So just remove "W" from being typed
+                        // replace with "w"
+                        setScaledText(textLabel.getText()
+                            + "w"
+                        );
+                    }
                 }
             }
         });
