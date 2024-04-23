@@ -19,8 +19,8 @@ public class BigWords extends JPanel {
     private FontMetrics fontMetrics;
     private int textHeight;
     private int textWidth;
-    private final static Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 90);
-    private final static int ITERATION_LIMIT = 100;
+    private final static Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 800);
+    private final static int ITERATION_LIMIT = 200;
     private final static int FONT_THRESHOLD = 30;
 
     public void mainGUI() {
@@ -75,49 +75,31 @@ public class BigWords extends JPanel {
         textHeight = fontMetrics.getHeight();
         textWidth = fontMetrics.stringWidth(newText);
         
-        float scale = 1f;
-
         if (textWidth == 0 || textHeight == 0) {
             textLabel.setFont(DEFAULT_FONT);
             textLabel.setText(newText);
             return;
         }
-
-        if (textHeight < textWidth) {
-            int iteration = 0;
-            while ((frame.getSize().width - textWidth < 0 
-                || frame.getSize().width - textWidth > FONT_THRESHOLD)
-                && iteration++ < ITERATION_LIMIT
-            ) {
-                scale = (textWidth - frame.getSize().width) < 0 ? 1 : -1;
-                font = font.deriveFont(font.getSize() + scale);
-                textLabel.setFont(font);
-                
-                fontMetrics = getFontMetrics(font);
-                textHeight = fontMetrics.getHeight();
-                textWidth = fontMetrics.stringWidth(newText);
-            }
-            font = font.deriveFont(font.getSize() - 1f);
-            textLabel.setFont(font);
-            textLabel.setText(newText);
-        } else {
-            int iteration = 0;
-            while ((frame.getSize().height - textHeight < 0
-                || frame.getSize().height - textHeight > FONT_THRESHOLD)
-                && iteration++ < ITERATION_LIMIT
-            ) {
-                scale = (textHeight - frame.getSize().height) < 0 ? 1 : -1;
-                font = font.deriveFont(font.getSize() + scale);
-                textLabel.setFont(font);
-                
-                fontMetrics = getFontMetrics(font);
-                textHeight = fontMetrics.getHeight();
-                textWidth = fontMetrics.stringWidth(newText);
-            }
-            font = font.deriveFont(font.getSize() - 1f);
-            textLabel.setFont(font);
-            textLabel.setText(newText);
+        
+        float scale = 1f;
+        int iteration = 0;
+        while (((frame.getSize().height - textHeight < 0
+            || frame.getSize().height - textHeight > FONT_THRESHOLD)
+            || (frame.getSize().width - textWidth < 0 
+            || frame.getSize().width - textWidth > FONT_THRESHOLD))
+            && iteration++ < ITERATION_LIMIT
+        ) {
+            scale = (textWidth - frame.getSize().width) < 0 ? 1 : -1;
+            font = font.deriveFont(font.getSize() + scale);
+            
+            fontMetrics = getFontMetrics(font);
+            textHeight = fontMetrics.getHeight();
+            textWidth = fontMetrics.stringWidth(newText);
         }
+
+        font = font.deriveFont(font.getSize() - 2f);
+        textLabel.setFont(font);
+        textLabel.setText(newText);
     }
 
     public static void main(String[] args) {
