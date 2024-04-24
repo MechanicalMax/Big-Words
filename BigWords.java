@@ -23,6 +23,11 @@ public class BigWords extends JPanel {
     private final static int ITERATION_LIMIT = 200;
     private final static int FONT_THRESHOLD = 30;
 
+    private final static int DEFAULT_MODE = 0;
+    private final static int ONE_WORD_MODE = 1;
+    private static boolean lastInputWasSpace = false;
+    private int inputMode = DEFAULT_MODE;
+
     public void mainGUI() {
         // Create JFrame
         frame = new JFrame("Big Words");
@@ -53,6 +58,10 @@ public class BigWords extends JPanel {
         
         frame.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE && e.isShiftDown()) {
+                    inputMode = inputMode == DEFAULT_MODE ? ONE_WORD_MODE : DEFAULT_MODE;
+                }
+
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     setScaledText("");
                 } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -62,6 +71,17 @@ public class BigWords extends JPanel {
                         )
                     );
                 } else if (font.canDisplay(e.getKeyChar())) {
+                    if (inputMode == ONE_WORD_MODE) {
+                        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                            lastInputWasSpace = true;
+                            return;
+                        }
+
+                        if (lastInputWasSpace) {
+                            textLabel.setText("");
+                        }
+                    }
+
                     if (e.getKeyChar() != 'W') {
                         setScaledText(textLabel.getText()
                             + String.valueOf(e.getKeyChar())
@@ -75,6 +95,8 @@ public class BigWords extends JPanel {
                             + "w"
                         );
                     }
+
+                    lastInputWasSpace = false;
                 }
             }
         });
